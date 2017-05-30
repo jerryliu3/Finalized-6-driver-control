@@ -18,46 +18,46 @@ int reset = 0;
 
 //motor1
 // All the wires needed for full functionality
-#define DIR1 10
-#define STEP1 11
-#define ENBL1 12
+#define DIR1 13
+#define STEP1 12
+//#define ENBL1 12
 
 // 2-wire basic config, microstepping is hardwired on the driver
 // BasicStepperDriver stepper(DIR, STEP);
 
 // microstep control for DRV8834
-#define M01 12
-#define M11 13
+#define M01 9
+#define M11 8
 DRV8834 stepper1(MOTOR_STEPS, DIR1, STEP1, M01, M11);
 // DRV8834 stepper(MOTOR_STEPS, DIR, STEP, ENBL, M0, M1);
 
 //motor2
 // All the wires needed for full functionality
-#define DIR2 6
-#define STEP2 7 
-#define ENBL2 8
+#define DIR2 9
+#define STEP2 8 
+//#define ENBL2 8
 
 // 2-wire basic config, microstepping is hardwired on the driver
 // BasicStepperDriver stepper(DIR, STEP);
 
 // microstep control for DRV8834
-#define M02 8
-#define M12 9
+#define M02 6
+#define M12 7
 DRV8834 stepper2(MOTOR_STEPS, DIR2, STEP2, M02, M12);
 // DRV8834 stepper(MOTOR_STEPS, DIR, STEP, ENBL, M0, M1);
 
 //motor3
 // All the wires needed for full functionality
-#define DIR3 2
-#define STEP3 3
-#define ENBL3 4
+#define DIR3 5
+#define STEP3 4
+//#define ENBL3 4
 
 // 2-wire basic config, microstepping is hardwired on the driver
 // BasicStepperDriver stepper(DIR, STEP);
 
 // microstep control for DRV8834
-#define M03 4
-#define M13 5
+#define M03 2
+#define M13 3
 DRV8834 stepper3(MOTOR_STEPS, DIR3, STEP3, M03, M13);
 //// DRV8834 stepper(MOTOR_STEPS, DIR, STEP, ENBL, M0, M1);
 
