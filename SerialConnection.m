@@ -20,9 +20,12 @@ end
 a = 'a';
 while(a~='d')
     a = 'a';
+slave = input('Which slave do you want to control (2-3): ');
 c1 = input('First coordinate: ');
 c2 = input('Second coordinate: ');
 c3 = input('Third coordinate: ');
+fprintf(s, '%i', slave);
+fwrite(s, 's');
 fprintf(s, '%1.2f', c1*1.00);
 fwrite(s, 's');
 fprintf(s, '%1.2f', c2*1.00);
