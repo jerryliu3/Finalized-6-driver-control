@@ -6,7 +6,6 @@ int slave = 0;
  double number1=0;
   double number2=0;
   double number3=0;
-  int count = 0;
   int reset = 0;
   char skip = 's';
 void setup() {
@@ -47,7 +46,6 @@ number3=Serial.parseFloat();
 }
 
 void receiveEvent(int bytes) {
-    count = count+1;
     char r = Wire.read();
         if(r == 'd')
         {
@@ -57,7 +55,6 @@ void receiveEvent(int bytes) {
         {
           Serial.println('c');
         }
-        count = 0;
         digitalWrite(reset,LOW);
 }   
 
