@@ -142,7 +142,6 @@ void loop() {
     // these two are equivalent: 180 degrees is 100 steps in full speed mode
     stepper1.move(20);
     //stepper1.rotate(180);
-  delay(1000);
     // one full reverse rotation
     stepper1.move(-20);
     //stepper1.rotate(-180);
