@@ -2,6 +2,7 @@
 #include <Wire.h>
 
 boolean go = false;
+int slave = 0;
  double number1=0;
   double number2=0;
   double number3=0;
@@ -25,10 +26,12 @@ void setup() {
 //  }
 
 
-while(number1 ==0)
+while(slave ==0)
 {
-number1 = Serial.parseFloat();
+slave = Serial.parseInt();
 }
+Serial.read();
+number1 = Serial.parseFloat();
 Serial.read();
 number2 = Serial.parseFloat();
 Serial.read();
@@ -44,11 +47,8 @@ number3=Serial.parseFloat();
 }
 
 void receiveEvent(int bytes) {
-Serial.println(7);
     count = count+1;
     char r = Wire.read();
-   if(count==2)
-    {
         if(r == 'd')
         {
             Serial.println('d');
@@ -59,13 +59,12 @@ Serial.println(7);
         }
         count = 0;
         digitalWrite(reset,LOW);
-    }
 }   
 
 void loop() {
   if(go)
   {
-        Wire.beginTransmission(2); // transmit to device #2
+        Wire.beginTransmission(slave); // transmit to device #2
             // Serial.println('d');
            char number1c[5];
     String(number1,2).toCharArray(number1c,5);
@@ -82,23 +81,8 @@ void loop() {
   //  Serial.println((int)(number3*100));
    //  Serial.println(number3c);
   //             Serial.println('d');
-    Wire.endTransmission(2);    // stop transmitting
+    Wire.endTransmission(slave);    // stop transmitting
 
-            Wire.beginTransmission(3); // transmit to device #3
-           // Serial.println('d');
-    String(number1,2).toCharArray(number1c,5);
-    Wire.write(number1c);              // sends x 
-               // Serial.println((int)(number1*100));
-    String(number2,2).toCharArray(number2c,5);
-    Wire.write(number2c);  
-   // Serial.println((int)(number2*100));
-    // Serial.println(number2c);
-    String(number3,2).toCharArray(number3c,5);
-    Wire.write(number3c);  
-  //  Serial.println((int)(number3*100));
-   //  Serial.println(number3c);
-  //             Serial.println('d');
-Wire.endTransmission(3);    // stop transmitting
    // Serial.println("done");
     go = false;
   }
