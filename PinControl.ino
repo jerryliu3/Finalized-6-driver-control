@@ -4,6 +4,7 @@
 
 boolean forward = true;
 double number1 = 0.0, number2 = 0.0, number3 = 0.0;
+int master = 1;
 int reset = 0;
 
 // Motor steps per revolution. Most steppers are 200 steps or 1.8 degrees/step
@@ -46,6 +47,7 @@ void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
   Wire.begin(2);
   Wire.onReceive(receiveEvent);
+  Wire.onRequest(requestEvent);
   digitalWrite(reset, HIGH);
   pinMode(reset, OUTPUT);
   stepper1.setRPM(60);
@@ -81,10 +83,27 @@ void receiveEvent(int bytes) {
   go = true;
 }
 
+void requestEvent()
+{
+    Serial.println("sending");
+    Wire.beginTransmission(master); // transmit to device #1
+    char number1c[5];
+    String(number1,2).toCharArray(number1c,5);
+    Wire.write(number1c);              // sends x 
+    char number2c[5];
+    String(number2,2).toCharArray(number2c,5);
+    Wire.write(number2c);  
+    char number3c[5];
+    String(number3,2).toCharArray(number3c,5);
+    Wire.write(number3c);  
+    Wire.endTransmission(master);    // stop transmitting    
+    Serial.println("sent");
+}
+
 void loop() {
   if (go)
   {
-    Wire.beginTransmission(1); // transmit to device #1
+    Wire.beginTransmission(master); // transmit to device #1
     if (number1 == -1||number1 == -1.00)
     {
       Wire.write('d');
@@ -93,7 +112,7 @@ void loop() {
     {
       Wire.write('c');
     }
-    Wire.endTransmission();
+    Wire.endTransmission(master);
     go = false;
 
     stepper1.setMicrostep(1); // make sure we are in full speed mode

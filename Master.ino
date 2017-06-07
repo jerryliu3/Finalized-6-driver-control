@@ -1,13 +1,12 @@
   // Include the required Wire library for I2C
 #include <Wire.h>
 
-boolean go = false;
 int slave = 0;
 double number1=0;
 double number2=0;
 double number3=0;
-int reset = 0;
-char skip = 's';
+//1 is ask position, 2 is move to position, 3 is move by, 4 is stop.
+int choice = 0;
 
 void setup() {
   // Start the I2C Bus as Master
@@ -22,11 +21,9 @@ void readNumbers()
   {
     
   }
-  slave = Serial.parseInt();
   number1 = Serial.parseFloat();
   number2 = Serial.parseFloat();
   number3=Serial.parseFloat();
-  go = true;
 }
 
 void receiveEvent(int bytes) {
@@ -41,10 +38,18 @@ void receiveEvent(int bytes) {
     }
 }   
 
-void loop() {
-  readNumbers();
-//  if(go)
-//  {
+void command()
+{
+  while(!Serial.available())
+  {
+    
+  }
+  slave = Serial.parseInt();
+  choice = Serial.parseInt();
+}
+
+void moveToPos()
+{
     Wire.beginTransmission(slave); // transmit to device #2
     char number1c[5];
     String(number1,2).toCharArray(number1c,5);
@@ -55,7 +60,57 @@ void loop() {
     char number3c[5];
     String(number3,2).toCharArray(number3c,5);
     Wire.write(number3c);  
-    Wire.endTransmission(slave);    // stop transmitting
-    go = false;
-//  }
+    Wire.endTransmission(slave);    // stop transmitting  
+}
+
+void askPos()
+{
+  //Serial.println('f');
+  Wire.requestFrom(slave, 12);
+  //Serial.println('f');
+  String number1S = "";
+  for(int x=0;x<4;x++)
+  {
+    number1S = number1S+ char(Wire.read());
+  }
+  number1 = number1S.toFloat();
+  String number2S = "";
+  for(int x=0;x<4;x++)
+  {
+    number2S += char(Wire.read());
+  }
+  number2 = number2S.toFloat();
+  String number3S = "";
+  for(int x=0;x<4;x++)
+  {
+    number3S += char(Wire.read());
+  }
+  number3 = number3S.toFloat();
+
+  Serial.println(number1);
+  Serial.println(number2);
+  Serial.println(number3);  
+}
+
+void loop() {
+    command();
+    //Serial.println('j');
+    if(choice == 1)
+    {
+      //Serial.println('f');
+      askPos();
+    }
+    else if(choice == 2)
+    {
+      readNumbers();
+      moveToPos();
+    }
+    else if(choice == 3)
+    {
+      
+    }
+    else if(choice == 4)
+    {
+      
+    }
 }
