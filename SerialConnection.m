@@ -41,35 +41,28 @@ while(a~='d')
         fprintf(s, '%1.2f', c2*1.00);
         fwrite(s, 's');
         fprintf(s, '%1.2f', c3*1.00);
-        while(a(1, 1)~='d' && a(1, 1)~='c')
             while(get(s, 'BytesAvailable')==0)
             end
             %a=fread(s, get(s, 'BytesAvailable'));
             a=fread(s, 1);
             b=fread(s, 2);
-            disp(a);
-            disp(b);
-        end
+            if(a == 'c')
+                disp("Continuing Program...");
+            else
+                disp("Stopping Program...");
+            end
+            %disp(b);
     else
-        %disp("loading");
         while(get(s, 'BytesAvailable')==0)
         end
-        %a=fread(s, get(s, 'BytesAvailable'));
         for x=1:3
             c = '';
             a=fread(s, 4);
-            %disp(a);
             for y=1:4
-                %disp("the character is");
-                %disp(char(a(y, 1)));
                 c = char(a(:, 1).');
             end
-            %c = char(a(1, 1)) + char(a(2, 1)) + char(a(3, 1)) + char(a(4, 1));
-            %disp("c is");
-            %disp(c);
-            %tempNumber = 0.00;
             tempNumber = str2double(string(c));
-            %disp(string(c));
+            disp("The current coordinates are: ");
             disp(tempNumber);
             fread(s, 2);
         end
@@ -80,11 +73,11 @@ while(a~='d')
         %a=fread(s, get(s, 'BytesAvailable'));
         a=fread(s, 1);
         b=fread(s, 2);
-        disp(a);
-        disp(b);
+        disp("The program will now stop...");
+        %disp(b);
     end
 end
-disp('program completed');
+disp('Execution Ended');
 %fscanf(s, '%u');
 fclose(s);
 clear all;
