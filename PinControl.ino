@@ -98,21 +98,8 @@ void requestEvent()
     Serial.println("sent");
 }
 
-void loop() {
-  if (go)
-  {
-    Wire.beginTransmission(master); // transmit to device #1
-    if (number1 == -1||number1 == -1.00)
-    {
-      Wire.write('d');
-    }
-    else
-    {
-      Wire.write('c');
-    }
-    Wire.endTransmission(master);
-    go = false;
-
+void moveMotors()
+{
     stepper1.setMicrostep(1); // make sure we are in full speed mode
 
     // these two are equivalent: 180 degrees is 100 steps in full speed mode
@@ -170,7 +157,23 @@ void loop() {
     // as you can see, using degrees is easier
     stepper3.move(-100*8);
     stepper3.rotate(-180);
+}
 
+void loop() {
+  if (go)
+  {
+    Wire.beginTransmission(master); // transmit to device #1
+    if (number1 == -1||number1 == -1.00)
+    {
+      Wire.write('d');
+    }
+    else
+    {
+      Wire.write('c');
+    }
+    Wire.endTransmission(master);
+    go = false;
+    moveMotors();
     digitalWrite(reset, LOW);
 
   }

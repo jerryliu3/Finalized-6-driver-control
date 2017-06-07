@@ -75,10 +75,14 @@ void askPos()
     number3S += char(Wire.read());
   }
   number3 = number3S.toFloat();
+}
 
-  Serial.println(number1);
-  Serial.println(number2);
-  Serial.println(number3);  
+void sendPos()
+{
+    askPos();
+    Serial.println(number1);
+    Serial.println(number2);
+    Serial.println(number3);    
 }
 
 void moveToPos()
@@ -96,8 +100,12 @@ void moveToPos()
     Wire.endTransmission(slave);    // stop transmitting  
 }
 
-void moveBy()
+void moveBy(double move1, double move2, double move3)
 {
+    //add adding the other numbers
+    number1 += move1;
+    number2 += move2;
+    number3 += move3;
     Wire.beginTransmission(slave); // transmit to device #2
     char number1c[5];
     String(number1,2).toCharArray(number1c,5);
@@ -111,13 +119,21 @@ void moveBy()
     Wire.endTransmission(slave);    // stop transmitting  
 }
 
+void reset()
+{
+  number1 = 0;
+  number2 = 0;
+  number3 = 0;
+  moveToPos();
+}
+
 void loop() {
     command();
     //Serial.println('j');
     if(choice == 1)
     {
       //Serial.println('f');
-      askPos();
+      sendPos();
     }
     else if(choice == 2)
     {
@@ -127,10 +143,15 @@ void loop() {
     else if(choice == 3)
     {
       readNumbers();
-      moveBy();
+      double move1 = number1;
+      double move2 = number2;
+      double move3 = number3;
+      askPos();
+      moveBy(move1, move2, move3);
     }
     else if(choice == 4)
     {
-      
+      reset();
+      sendPos();
     }
 }

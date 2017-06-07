@@ -22,16 +22,20 @@ while(a~='d')
     a = 'a';
     slave = input('Which slave do you want to control (2-3): ');
     command = input('Which command do you want: ');
-    if(command ~= 1)
+    if(command == 2)
         c1 = input('First coordinate: ');
         c2 = input('Second coordinate: ');
         c3 = input('Third coordinate: ');
+    elseif(command == 3)
+        c1 = input('Change first coordinate by: ');
+        c2 = input('Change second coordinate by: ');
+        c3 = input('Change third coordinate by: ');  
     end
     fprintf(s, '%i', slave);
     fwrite(s, 's');
     fprintf(s, '%i', command);
     fwrite(s, 's');
-    if(command ~=1)
+    if(command == 2 || command == 3)
         fprintf(s, '%1.2f', c1*1.00);
         fwrite(s, 's');
         fprintf(s, '%1.2f', c2*1.00);
@@ -68,7 +72,7 @@ while(a~='d')
             %disp(string(c));
             disp(tempNumber);
             fread(s, 2);
-        end
+        end        
     end
 end
 disp('program completed');
