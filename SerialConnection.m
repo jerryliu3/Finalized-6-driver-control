@@ -29,7 +29,7 @@ while(a~='d')
     elseif(command == 3)
         c1 = input('Change first coordinate by: ');
         c2 = input('Change second coordinate by: ');
-        c3 = input('Change third coordinate by: ');  
+        c3 = input('Change third coordinate by: ');
     end
     fprintf(s, '%i', slave);
     fwrite(s, 's');
@@ -72,7 +72,16 @@ while(a~='d')
             %disp(string(c));
             disp(tempNumber);
             fread(s, 2);
-        end        
+        end
+    end
+    if(command == 4)
+        while(get(s, 'BytesAvailable')==0)
+        end
+        %a=fread(s, get(s, 'BytesAvailable'));
+        a=fread(s, 1);
+        b=fread(s, 2);
+        disp(a);
+        disp(b);
     end
 end
 disp('program completed');

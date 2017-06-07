@@ -163,8 +163,9 @@ void loop() {
   if (go)
   {
     Wire.beginTransmission(master); // transmit to device #1
-    if (number1 == -1||number1 == -1.00)
+    if (number1 == 0 ||number1 == 0.00)
     {
+      delay(5000);
       Wire.write('d');
     }
     else
