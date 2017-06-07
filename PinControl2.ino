@@ -4,6 +4,7 @@
 
 boolean forward = true;
 double number1 = 0.0, number2 = 0.0, number3 = 0.0;
+double newNumber1 = number1, newNumber2 = number2, newNumber3 = number3;
 int master = 1;
 int reset = 0;
 
@@ -51,8 +52,8 @@ void setup() {
   digitalWrite(reset, HIGH);
   pinMode(reset, OUTPUT);
   stepper1.setRPM(60);
-  stepper2.setRPM(120);
-  stepper3.setRPM(120);
+  stepper2.setRPM(60);
+  stepper3.setRPM(60);
 }
 
 void receiveEvent(int bytes) {
@@ -62,30 +63,29 @@ void receiveEvent(int bytes) {
   {
     number1S = number1S+ char(Wire.read());
   }
-  number1 = number1S.toFloat();
+  newNumber1 = number1S.toFloat();
   String number2S = "";
   for(int x=0;x<4;x++)
   {
     number2S += char(Wire.read());
   }
-  number2 = number2S.toFloat();
+  newNumber2 = number2S.toFloat();
   String number3S = "";
   for(int x=0;x<4;x++)
   {
     number3S += char(Wire.read());
   }
-  number3 = number3S.toFloat();
+  newNumber3 = number3S.toFloat();
   
-  Serial.println(number1);
-  Serial.println(number2);
-  Serial.println(number3);
+  Serial.println(newNumber1);
+  Serial.println(newNumber2);
+  Serial.println(newNumber3);
   Serial.println("finished");
   go = true;
 }
 
 void requestEvent()
 {
-    Serial.println("sending");
     char number1c[5];
     String(number1,2).toCharArray(number1c,5);
     Wire.write(number1c);              // sends x 
@@ -95,30 +95,48 @@ void requestEvent()
     char number3c[5];
     String(number3,2).toCharArray(number3c,5);
     Wire.write(number3c);  
-    Serial.println("sent");
+}
+
+int calculateChange(int motor)
+{
+  int steps = 0;
+  if(motor == 1)
+  {
+    steps = round((newNumber1 - number1)/2);  
+  }
+  else if(motor == 2)
+  {
+    steps = round((newNumber2 - number2)/2);
+  }
+  else if(motor == 3)
+  {
+    steps = round((newNumber3 - number3)/2);
+  }
+  return steps;
 }
 
 void moveMotors()
 {
     stepper1.setMicrostep(1); // make sure we are in full speed mode
 
-    // these two are equivalent: 180 degrees is 100 steps in full speed mode
-    stepper1.move(20);
-    //stepper1.rotate(180);
-    // one full reverse rotation
-    stepper1.move(-20);
-    //stepper1.rotate(-180);
+    stepper1.move(calculateChange(1));
+    stepper1.move(-1*calculateChange(1));
 
     
     stepper2.setMicrostep(1); // make sure we are in full speed mode
 
-    // these two are equivalent: 180 degrees is 100 steps in full speed mode
-    stepper2.move(100);
-    stepper2.rotate(180);
+    stepper2.move(calculateChange(2));
+    stepper2.move(-1*calculateChange(2));
 
-    // one full reverse rotation
-    stepper2.move(-100);
-    stepper2.rotate(-180);
+    stepper3.setMicrostep(1); // make sure we are in full speed mode
+
+    stepper3.move(calculateChange(3));
+    stepper3.move(-1*calculateChange(3));
+
+    number1 = newNumber1;
+    number2 = newNumber2;
+    number3 = newNumber3;
+    //stepper2.rotate(180); measured in degrees
 
     /*
      * Microstepping mode: 1,2,4,8,16 or 32(DRV8834 only)
@@ -126,7 +144,7 @@ void moveMotors()
      * Mode 32 is 32 microsteps per step.
      * The motor should rotate just as fast (set RPM),
      * but movement precision is increased.
-     */
+     
     stepper2.setMicrostep(8);
 
     // 180 degrees now takes 100 * 8 microsteps
@@ -136,27 +154,7 @@ void moveMotors()
     // as you can see, using degrees is easier
     stepper2.move(-100*8);
     stepper2.rotate(-180);
-
-
-    stepper3.setMicrostep(1); // make sure we are in full speed mode
-
-    // these two are equivalent: 180 degrees is 100 steps in full speed mode
-    stepper3.move(100);
-    stepper3.rotate(180);
-
-    // one full reverse rotation
-    stepper3.move(-100);
-    stepper3.rotate(-180);
-    
-    stepper3.setMicrostep(8);
-
-    // 180 degrees now takes 100 * 8 microsteps
-    stepper3.move(100*8);
-    stepper3.rotate(180);
-
-    // as you can see, using degrees is easier
-    stepper3.move(-100*8);
-    stepper3.rotate(-180);
+    */
 }
 
 void loop() {
