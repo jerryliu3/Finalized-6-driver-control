@@ -86,7 +86,6 @@ void receiveEvent(int bytes) {
 void requestEvent()
 {
     Serial.println("sending");
-    Wire.beginTransmission(master); // transmit to device #1
     char number1c[5];
     String(number1,2).toCharArray(number1c,5);
     Wire.write(number1c);              // sends x 
@@ -96,7 +95,6 @@ void requestEvent()
     char number3c[5];
     String(number3,2).toCharArray(number3c,5);
     Wire.write(number3c);  
-    Wire.endTransmission(master);    // stop transmitting    
     Serial.println("sent");
 }
 

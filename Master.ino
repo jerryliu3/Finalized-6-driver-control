@@ -48,26 +48,15 @@ void command()
   choice = Serial.parseInt();
 }
 
-void moveToPos()
-{
-    Wire.beginTransmission(slave); // transmit to device #2
-    char number1c[5];
-    String(number1,2).toCharArray(number1c,5);
-    Wire.write(number1c);              // sends x 
-    char number2c[5];
-    String(number2,2).toCharArray(number2c,5);
-    Wire.write(number2c);  
-    char number3c[5];
-    String(number3,2).toCharArray(number3c,5);
-    Wire.write(number3c);  
-    Wire.endTransmission(slave);    // stop transmitting  
-}
-
 void askPos()
 {
   //Serial.println('f');
   Wire.requestFrom(slave, 12);
   //Serial.println('f');
+  while(!Wire.available())
+  {
+    
+  }
   String number1S = "";
   for(int x=0;x<4;x++)
   {
@@ -92,6 +81,36 @@ void askPos()
   Serial.println(number3);  
 }
 
+void moveToPos()
+{
+    Wire.beginTransmission(slave); // transmit to device #2
+    char number1c[5];
+    String(number1,2).toCharArray(number1c,5);
+    Wire.write(number1c);              // sends x 
+    char number2c[5];
+    String(number2,2).toCharArray(number2c,5);
+    Wire.write(number2c);  
+    char number3c[5];
+    String(number3,2).toCharArray(number3c,5);
+    Wire.write(number3c);  
+    Wire.endTransmission(slave);    // stop transmitting  
+}
+
+void moveBy()
+{
+    Wire.beginTransmission(slave); // transmit to device #2
+    char number1c[5];
+    String(number1,2).toCharArray(number1c,5);
+    Wire.write(number1c);              // sends x 
+    char number2c[5];
+    String(number2,2).toCharArray(number2c,5);
+    Wire.write(number2c);  
+    char number3c[5];
+    String(number3,2).toCharArray(number3c,5);
+    Wire.write(number3c);  
+    Wire.endTransmission(slave);    // stop transmitting  
+}
+
 void loop() {
     command();
     //Serial.println('j');
@@ -107,7 +126,8 @@ void loop() {
     }
     else if(choice == 3)
     {
-      
+      readNumbers();
+      moveBy();
     }
     else if(choice == 4)
     {
