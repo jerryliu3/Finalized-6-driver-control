@@ -6,7 +6,6 @@ boolean forward = true;
 double number1 = 0.0, number2 = 0.0, number3 = 0.0;
 double newNumber1 = number1, newNumber2 = number2, newNumber3 = number3;
 int master = 1;
-int reset = 0;
 
 // Motor steps per revolution. Most steppers are 200 steps or 1.8 degrees/step
 #define MOTOR_STEPS 20
@@ -41,7 +40,7 @@ DRV8834 stepper2(MOTOR_STEPS, DIR2, STEP2, M02, M12);
 DRV8834 stepper3(MOTOR_STEPS, DIR3, STEP3, M03, M13);
 
 
-boolean go = false;
+boolean go = false, readyToSend = true;
 
 void setup() {
   //parameters are #steps, stepper# (port) M1&M2 = 1, M3&M4 = 2
@@ -49,14 +48,13 @@ void setup() {
   Wire.begin(3);
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
-  digitalWrite(reset, HIGH);
-  pinMode(reset, OUTPUT);
   stepper1.setRPM(60);
   stepper2.setRPM(60);
   stepper3.setRPM(60);
 }
 
 void receiveEvent(int bytes) {
+  readyToSend = false;
   Serial.println("reading");
   String number1S = "";
   for(int x=0;x<4;x++)
@@ -86,6 +84,10 @@ void receiveEvent(int bytes) {
 
 void requestEvent()
 {
+    while(!readyToSend)
+    {
+      
+    }
     char number1c[5];
     String(number1,2).toCharArray(number1c,5);
     Wire.write(number1c);              // sends x 
@@ -136,6 +138,7 @@ void moveMotors()
     number1 = newNumber1;
     number2 = newNumber2;
     number3 = newNumber3;
+    readyToSend = true;
     //stepper2.rotate(180); measured in degrees
 
     /*
@@ -160,10 +163,11 @@ void moveMotors()
 void loop() {
   if (go)
   {
+    moveMotors();
+    delay(5000);
     Wire.beginTransmission(master); // transmit to device #1
     if (number1 == 0 ||number1 == 0.00)
     {
-      delay(2000);
       Wire.write('d');
     }
     else
@@ -172,8 +176,5 @@ void loop() {
     }
     Wire.endTransmission(master);
     go = false;
-    moveMotors();
-    digitalWrite(reset, LOW);
-
   }
 }

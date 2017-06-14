@@ -164,10 +164,10 @@ void loop() {
   if (go)
   {
     moveMotors();
+    delay(5000);
     Wire.beginTransmission(master); // transmit to device #1
     if (number1 == 0 ||number1 == 0.00)
     {
-      delay(2000);
       Wire.write('d');
     }
     else

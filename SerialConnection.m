@@ -44,11 +44,9 @@ while(a~='d')
             while(get(s, 'BytesAvailable')==0)
             end
             %a=fread(s, get(s, 'BytesAvailable'));
-            disp(get(s, 'BytesAvailable'));
             a=fread(s, 1);
             b=fread(s, 2);
             disp(a);
-            disp(b);
             if(a == 'c')
                 disp("Continuing Program...");
             else
@@ -60,7 +58,6 @@ while(a~='d')
         end
         for x=1:3
             c = '';
-            disp(get(s, 'BytesAvailable'));
             a=fread(s, 4);
             for y=1:4
                 c = char(a(:, 1).');
@@ -75,7 +72,6 @@ while(a~='d')
         while(get(s, 'BytesAvailable')==0)
         end
         %a=fread(s, get(s, 'BytesAvailable'));
-        disp(get(s, 'BytesAvailable'));
         a=fread(s, 1);
         b=fread(s, 2);
         disp("The program will now stop...");
