@@ -44,8 +44,9 @@ boolean go = false, readyToSend = true;
 
 void setup() {
   //parameters are #steps, stepper# (port) M1&M2 = 1, M3&M4 = 2
+  pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(9600);           // set up Serial library at 9600 bps
-  Wire.begin(3);
+  Wire.begin(4);
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
   stepper1.setRPM(60);
@@ -161,6 +162,10 @@ void moveMotors()
 }
 
 void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
   if (go)
   {
     moveMotors();

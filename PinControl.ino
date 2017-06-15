@@ -114,6 +114,7 @@ int calculateChange(int motor)
   {
     steps = round((newNumber3 - number3)/0.2866*MOTOR_STEPS);
   }
+  Serial.println(steps);
   return steps;
 }
 
@@ -134,7 +135,6 @@ void moveMotors()
 
     stepper3.move(calculateChange(3));
     stepper3.move(-1*calculateChange(3));
-
     number1 = newNumber1;
     number2 = newNumber2;
     number3 = newNumber3;
@@ -164,7 +164,7 @@ void loop() {
   if (go)
   {
     moveMotors();
-    delay(5000);
+    //delay(5000);
     Wire.beginTransmission(master); // transmit to device #1
     if (number1 == 0 ||number1 == 0.00)
     {
