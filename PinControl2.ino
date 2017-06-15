@@ -104,15 +104,15 @@ int calculateChange(int motor)
   int steps = 0;
   if(motor == 1)
   {
-    steps = round((newNumber1 - number1)/2);  
+    steps = round((newNumber1 - number1)/0.2866*MOTOR_STEPS);  
   }
   else if(motor == 2)
   {
-    steps = round((newNumber2 - number2)/2);
+    steps = round((newNumber2 - number2)/0.2866*MOTOR_STEPS);
   }
   else if(motor == 3)
   {
-    steps = round((newNumber3 - number3)/2);
+    steps = round((newNumber3 - number3)/0.2866*MOTOR_STEPS);
   }
   return steps;
 }
