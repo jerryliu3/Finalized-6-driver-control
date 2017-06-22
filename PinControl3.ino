@@ -15,8 +15,8 @@ int master = 1;
 #define DIR1 13
 #define STEP1 12
 // microstep control for DRV8834
-#define M01 9
-#define M11 8
+#define M01 11
+#define M11 10
 DRV8834 stepper1(MOTOR_STEPS, DIR1, STEP1, M01, M11);
 
 //motor2
@@ -124,18 +124,14 @@ void moveMotors()
     stepper1.setMicrostep(1); // make sure we are in full speed mode
 
     stepper1.move(calculateChange(1));
-    stepper1.move(-1*calculateChange(1));
-
     
     stepper2.setMicrostep(1); // make sure we are in full speed mode
 
     stepper2.move(calculateChange(2));
-    stepper2.move(-1*calculateChange(2));
 
     stepper3.setMicrostep(1); // make sure we are in full speed mode
 
     stepper3.move(calculateChange(3));
-    stepper3.move(-1*calculateChange(3));
     number1 = newNumber1;
     number2 = newNumber2;
     number3 = newNumber3;
